@@ -11,13 +11,7 @@
             </div>
         </div>
         <div class="col-lg-6 text-center text-lg-right">
-            <div class="d-inline-flex align-items-center">
-                <a class="text-dark px-2" href=""><i class="fab fa-facebook-f"></i></a>
-                <a class="text-dark px-2" href=""><i class="fab fa-twitter"></i></a>
-                <a class="text-dark px-2" href=""><i class="fab fa-linkedin-in"></i></a>
-                <a class="text-dark px-2" href=""><i class="fab fa-instagram"></i></a>
-                <a class="text-dark pl-2" href=""><i class="fab fa-youtube"></i></a>
-            </div>
+           
         </div>
     </div>
     <div class="row align-items-center py-3 px-xl-5">
@@ -38,11 +32,15 @@
         </div>
         <div class="col-lg-3 col-6 text-right">
             <a href="" class="btn border"><i class="fas fa-heart text-primary"></i><span class="badge">0</span></a>
-            <a href="" class="btn border"><i class="fas fa-shopping-cart text-primary"></i><span class="badge">0</span></a>
+            <a href="{{ route('cart.show') }}" class="btn border">
+                <i class="fas fa-shopping-cart text-primary"></i>
+                <span class="badge">{{ count((array) session('cart')) }}</span>
+            </a>
         </div>
     </div>
 </div>
 <!-- Topbar End -->
+
 <!-- Navbar Start -->
 <div class="container-fluid">
     <div class="row border-top px-xl-5">
@@ -53,9 +51,12 @@
             </a>
             <nav class="collapse position-absolute navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0 bg-light" id="navbar-vertical" style="width: calc(100% - 30px); z-index: 1;">
                 <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
-                    <a href="" class="nav-item nav-link">Shirts</a>
-                    <a href="" class="nav-item nav-link">Jeans</a>
-                    <a href="" class="nav-item nav-link">Swimwear</a>
+                  
+                    @if(isset($categories))
+                        @foreach($categories as $category)
+                            <a href="{{ route('category.products', $category->id) }}" class="nav-item nav-link">{{ $category->name }}</a>
+                        @endforeach
+                    @endif
                 </div>
             </nav>
         </div>
@@ -69,10 +70,8 @@
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
                     <div class="navbar-nav mr-auto py-0">
-                        <a href="/" class="nav-item nav-link active">Home</a>
-                        <a href="/shop" class="nav-item nav-link">Shop</a>
-                        <a href="/detail" class="nav-item nav-link">Shop Detail</a>
-                        <a href="/contact" class="nav-item nav-link">Contact</a>
+                        <a href="{{ route('home') }}" class="nav-item nav-link">Home</a>
+                        {{-- Other static links --}}
                     </div>
                     <div class="navbar-nav ml-auto py-0">
                         @guest
@@ -81,51 +80,17 @@
                                 <a href="{{ route('register') }}" class="nav-item nav-link">Register</a>
                             @endif
                         @else
-                            <div class="nav-item dropdown">
-                                <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }}</a>
-                                <div class="dropdown-menu rounded-0 m-0">
-                                    <a href="{{ route('profile.edit') }}" class="dropdown-item">My Profile</a>
-                                    <form method="POST" action="{{ route('logout') }}">
-                                        @csrf
-                                        <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();">Logout</a>
-                                    </form>
-                                </div>
-                            </div>
+                            
                         @endguest
                     </div>
                 </div>
             </nav>
-            
-            {{-- CAROUSEL GOES HERE - Important change --}}
+           
             @if(Request::is('/'))
-            <div id="header-carousel" class="carousel slide" data-ride="carousel">
-                <div class="carousel-inner">
-                    <div class="carousel-item active" style="height: 410px;">
-                        <img class="img-fluid" src="{{ asset('img/carousel-1.jpg') }}" alt="Image">
-                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Fashionable Dress</h3>
-                                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="carousel-item" style="height: 410px;">
-                        <img class="img-fluid" src="{{ asset('img/carousel-2.jpg') }}" alt="Image">
-                        <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
-                            <div class="p-3" style="max-width: 700px;">
-                                <h4 class="text-light text-uppercase font-weight-medium mb-3">10% Off Your First Order</h4>
-                                <h3 class="display-4 text-white font-weight-semi-bold mb-4">Reasonable Price</h3>
-                                <a href="" class="btn btn-light py-2 px-3">Shop Now</a>
-                            </div>
-                        </div>
-                    </div>
+                <div id="header-carousel" class="carousel slide" data-ride="carousel">
+                   {{-- ... Carousel HTML ... --}}
                 </div>
-                <a class="carousel-control-prev" href="#header-carousel" data-slide="prev"><div class="btn btn-dark" style="width: 45px; height: 45px;"><span class="carousel-control-prev-icon mb-n2"></span></div></a>
-                <a class="carousel-control-next" href="#header-carousel" data-slide="next"><div class="btn btn-dark" style="width: 45px; height: 45px;"><span class="carousel-control-next-icon mb-n2"></span></div></a>
-            </div>
             @endif
-
         </div>
     </div>
 </div>

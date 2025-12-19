@@ -4,7 +4,7 @@
 
 @section('content')
 
-    
+    <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 300px">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">Shop Detail</h1>
@@ -15,10 +15,10 @@
             </div>
         </div>
     </div>
-    
+    <!-- Page Header End -->
 
 
-   
+    <!-- Shop Detail Start -->
     <div class="container-fluid py-5">
         <div class="row px-xl-5">
             <div class="col-lg-5 pb-5">
@@ -35,7 +35,6 @@
                 <h3 class="font-weight-semi-bold">{{ $product->name }}</h3>
                 <h3 class="font-weight-semi-bold mb-4">${{ number_format($product->price, 2) }}</h3>
                 <p class="mb-4">{{ $product->description }}</p>
-                
                 
                 <form action="{{ route('cart.add', $product->id) }}" method="POST">
                     @csrf
@@ -56,8 +55,6 @@
                         <button type="submit" class="btn btn-primary px-3"><i class="fa fa-shopping-cart mr-1"></i> Add To Cart</button>
                     </div>
                 </form>
-                
-
             </div>
         </div>
         <div class="row px-xl-5">
@@ -78,6 +75,28 @@
             </div>
         </div>
     </div>
-    
+    <!-- Shop Detail End -->
 
+@endsection
+
+@section('scripts')
+<script>
+$(document).ready(function(){
+    
+    $('.quantity .btn-plus').on('click', function() {
+        var input = $(this).closest('.quantity').find('input');
+        var currentValue = parseInt(input.val());
+        input.val(currentValue + 1);
+    });
+
+   
+    $('.quantity .btn-minus').on('click', function() {
+        var input = $(this).closest('.quantity').find('input');
+        var currentValue = parseInt(input.val());
+        if (currentValue > 1) {
+            input.val(currentValue - 1);
+        }
+    });
+});
+</script>
 @endsection
