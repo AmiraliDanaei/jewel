@@ -3,22 +3,25 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use App\Models\Category;
 use App\Models\Product;
+use Illuminate\Http\Request;
+use Illuminate\Support\Str;
 
 class ProductController extends Controller
 {
+    
     public function index()
     {
-        $products = Product::with('category')->latest()->paginate(10); 
-        return view('admin.products.index', compact('products')); 
+        $products = Product::with('category')->latest()->paginate(10);
+        return view('admin.products.index', compact('products'));
     }
+
     
     public function create()
     {
-        $categories = Category::all(); 
-        return view('admin.products.create', compact('categories')); 
+        $categories = Category::all();
+        return view('admin.products.create', compact('categories'));
     }
 
     
@@ -33,44 +36,74 @@ class ProductController extends Controller
             'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
+        $fileNameToStore = 'default.jpg';
         if ($request->hasFile('image')) {
-            $filenameWithExt = $request->file('image')->getClientOriginalName();
-            $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
+            $filename = pathinfo($request->file('image')->getClientOriginalName(), PATHINFO_FILENAME);
+            $cleanedFilename = Str::slug($filename);
             $extension = $request->file('image')->getClientOriginalExtension();
-            $fileNameToStore= $filename.'_'.time().'.'.$extension;
-            
-            $path = $request->file('image')->storeAs('public/products', $fileNameToStore);
-            
-            $validatedData['image'] = $fileNameToStore;
-        } else {
-            $validatedData['image'] = 'default.jpg';
+            $fileNameToStore = $cleanedFilename . '_' . time() . '.' . $extension;
+            $request->file('image')->move(public_path('products'), $fileNameToStore);
         }
-        
+
+        $validatedData['image'] = $fileNameToStore;
         Product::create($validatedData);
-        
-        return redirect()->route('products.index')->with('success', 'محصول جدید با موفقیت اضافه شد!');
+
+        return redirect()->route('admin.products.index')->with('success', 'محصول جدید با موفقیت اضافه شد!');
     }
 
     
-    public function show(string $id)
+    public function show(Product $product)
     {
-        
-    }
-
-    public function edit(string $id)
-    {
-        
+       
+        return view('admin.products.show', compact('product'));
     }
 
     
-    public function update(Request $request, string $id)
+    public function edit(Product $product)
     {
-        
+        $categories = Category::all();
+        return view('admin.products.edit', compact('product', 'categories'));
+    }
+
+   
+    public function update(Request $request, Product $product)
+    {
+        $validatedData = $request->validate([
+            'name' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'quantity' => 'required|integer|min:0',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+        ]);
+
+        if ($request->hasFile('image')) {
+            if ($product->image && $product->image != 'default.jpg' && file_exists(public_path('products/' . $product->image))) {
+                unlink(public_path('products/' . $product->image));
+            }
+
+            $filename = pathinfo($request->file('image')->getClientOriginalName(), PATHINFO_FILENAME);
+            $cleanedFilename = Str::slug($filename);
+            $extension = $request->file('image')->getClientOriginalExtension();
+            $fileNameToStore = $cleanedFilename . '_' . time() . '.' . $extension;
+            $request->file('image')->move(public_path('products'), $fileNameToStore);
+            $validatedData['image'] = $fileNameToStore;
+        }
+
+        $product->update($validatedData);
+
+        return redirect()->route('admin.products.index')->with('success', 'محصول با موفقیت آپدیت شد!');
     }
 
     
-    public function destroy(string $id)
+    public function destroy(Product $product)
     {
-        
+        if ($product->image && $product->image != 'default.jpg' && file_exists(public_path('products/' . $product->image))) {
+            unlink(public_path('products/' . $product->image));
+        }
+
+        $product->delete();
+
+        return redirect()->route('admin.products.index')->with('success', 'محصول با موفقیت حذف شد!');
     }
 }

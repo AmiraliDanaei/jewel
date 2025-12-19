@@ -8,10 +8,8 @@
     <div class="card">
         <div class="card-body">
             
-            {{-- ======================================================= --}}
-            {{-- THE <form> TAG IS NOW CORRECT WITH 'enctype'          --}}
-            {{-- ======================================================= --}}
-            <form action="{{ route('products.store') }}" method="POST" enctype="multipart/form-data">
+            {{-- The form action and cancel button routes are now corrected --}}
+            <form action="{{ route('admin.products.store') }}" method="POST" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group mb-3">
                     <label for="name">Product Name:</label>
@@ -32,7 +30,7 @@
                     <label for="quantity">Quantity:</label>
                     <input type="number" id="quantity" name="quantity" class="form-control" required min="0" value="1">
                 </div>
-
+                
                 <div class="form-group mb-3">
                     <label for="image">Product Image:</label>
                     <input type="file" id="image" name="image" class="form-control">
@@ -54,7 +52,7 @@
                 </div>
                 
                 <button type="submit" class="btn btn-success">Save Product</button>
-                <a href="{{ route('products.index') }}" class="btn btn-secondary">Cancel</a>
+                <a href="{{ route('admin.products.index') }}" class="btn btn-secondary">Cancel</a>
             </form>
         </div>
     </div>
