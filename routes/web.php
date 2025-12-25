@@ -12,11 +12,13 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
 // Admin Controllers
+use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\ReportController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Http\Controllers\Admin\CategoryController as AdminCategoryController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\CouponController;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,8 +38,8 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
+Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.apply-coupon'); // <-- New Coupon Route
 Route::get('/payment/callback', [CheckoutController::class, 'callback'])->name('payment.callback');
-
 
 // == 3. AUTHENTICATED USER ROUTES ==
 Route::middleware(['auth', 'verified'])->group(function () {
@@ -50,20 +52,16 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 // == 4. ADMIN PANEL ROUTES ==
-Route::middleware(['auth', CheckIfAdmin::class]) // <-- THIS IS THE CORRECTED LINE
+Route::middleware(['auth', CheckIfAdmin::class])
     ->prefix('admin')
     ->name('admin.')
     ->group(function () {
-    
-    Route::get('/', function () {
-        return redirect()->route('admin.orders.index');
-    })->name('dashboard');
-
+    Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('products', AdminProductController::class);
     Route::resource('orders', OrderController::class);
     Route::resource('categories', AdminCategoryController::class);
     Route::resource('users', UserController::class);
-    
+    Route::resource('coupons', CouponController::class);
     Route::get('reports/popular-categories', [ReportController::class, 'popularCategories'])->name('reports.popular-categories');
 });
 

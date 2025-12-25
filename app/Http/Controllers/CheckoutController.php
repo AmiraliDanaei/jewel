@@ -9,12 +9,35 @@ use Illuminate\Support\Facades\DB;
 class CheckoutController extends Controller
 {
     public function index()
-    {
-        if (!session('cart') || count(session('cart')) == 0) {
-            return redirect()->route('cart.show')->with('error', 'سبد خرید شما خالی است!');
-        }
-        return view('checkout.index');
+{
+    $cart = session()->get('cart');
+
+    if (!$cart || count($cart) == 0) {
+        return redirect()->route('cart.show')->with('error', 'سبد خرید شما برای ادامه خالی است!');
     }
+
+    
+    $subtotal = 0;
+    foreach ($cart as $details) {
+        $subtotal += $details['price'] * $details['quantity'];
+    }
+
+    $discount = 0;
+    if (session()->has('coupon')) {
+        $coupon = session()->get('coupon');
+        if ($coupon['type'] == 'percent') {
+            $discount = ($subtotal * $coupon['value']) / 100;
+        } else {
+            $discount = $coupon['value'];
+        }
+    }
+
+    $total = $subtotal - $discount;
+    
+
+    return view('checkout.index', compact('subtotal', 'discount', 'total'));
+}
+
 
     public function placeOrder(Request $request)
     {

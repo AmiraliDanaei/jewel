@@ -10,12 +10,18 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-    {
-        Schema::create('coupons', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('coupons', function (Blueprint $table) {
+        $table->id();
+        $table->string('code')->unique();
+        $table->string('type');
+        $table->integer('value');
+        $table->date('expires_at')->nullable();
+        $table->timestamps();
+    });
+}
+
+
 
     /**
      * Reverse the migrations.

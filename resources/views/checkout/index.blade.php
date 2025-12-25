@@ -3,6 +3,7 @@
 @section('title', 'تکمیل خرید')
 
 @section('content')
+
     <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px;">
@@ -21,7 +22,7 @@
         <form class="row px-xl-5" action="{{ route('checkout.placeOrder') }}" method="POST">
             @csrf
             <div class="col-lg-8">
-                <div class="mb-4 p-4" style="background-color: #F5F5F5;">
+                <div class="mb-4 p-4" style="background-color: #F5F5F5; direction: rtl;">
                     <h4 class="font-weight-semi-bold mb-4 text-right">آدرس ارسال و صورتحساب</h4>
                     <div class="row">
                         <div class="col-md-6 form-group">
@@ -36,7 +37,7 @@
                             <label class="text-right d-block">شماره موبایل</label>
                             <input class="form-control text-right" type="text" name="mobile" placeholder="...۰۹" required>
                         </div>
-                         <div class="col-md-6 form-group">
+                        <div class="col-md-6 form-group">
                             <label class="text-right d-block">استان</label>
                             <select class="custom-select text-right" name="province" required>
                                 <option value="" selected disabled>یک استان را انتخاب کنید</option>
@@ -95,19 +96,28 @@
                     </div>
                     <div class="card-body">
                         <h5 class="font-weight-medium mb-3 text-right">محصولات</h5>
-                        @php $total = 0 @endphp
                         @foreach((array) session('cart') as $id => $details)
-                            @php $total += $details['price'] * $details['quantity'] @endphp
                             <div class="d-flex justify-content-between">
-                                <p>({{ $details['quantity'] }}x) {{ $details['name'] }}</p>
+                                <p>{{ $details['name'] }} (x{{ $details['quantity'] }})</p>
                                 <p>{{ number_format($details['price'] * $details['quantity']) }} تومان</p>
                             </div>
                         @endforeach
+                        <hr class="mt-0">
+                        <div class="d-flex justify-content-between mb-3 pt-1">
+                            <h6 class="font-weight-medium">جمع محصولات</h6>
+                            <h6 class="font-weight-medium">{{ number_format($subtotal) }} تومان</h6>
+                        </div>
+                        @if(session()->has('coupon'))
+                            <div class="d-flex justify-content-between">
+                                <h6 class="font-weight-medium text-success">تخفیف</h6>
+                                <h6 class="font-weight-medium text-success">-{{ number_format($discount) }} تومان</h6>
+                            </div>
+                        @endif
                     </div>
                     <div class="card-footer border-secondary bg-transparent">
                         <div class="d-flex justify-content-between mt-2">
-                            <h5 class="font-weight-bold">جمع کل</h5>
-                            <h5 class="font-weight-bold">{{ number_format($total) }} تومان</h5>
+                            <h5 class="font-weight-bold">مبلغ نهایی</h5>
+                            <h5 class="font-weight-bold">{{ number_format($total > 0 ? $total : 0) }} تومان</h5>
                         </div>
                     </div>
                 </div>

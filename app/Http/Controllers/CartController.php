@@ -84,4 +84,23 @@ class CartController extends Controller
         }
         return redirect()->back()->with('error', 'مشکلی در حذف محصول رخ داد.');
     }
+    public function applyCoupon(Request $request)
+{
+    $request->validate(['coupon_code' => 'required|string']);
+
+    $coupon = \App\Models\Coupon::where('code', $request->coupon_code)->first();
+
+    if (!$coupon) {
+        return redirect()->back()->with('error', 'کد تخفیف نامعتبر است.');
+    }
+
+    session()->put('coupon', [
+        'code' => $coupon->code,
+        'type' => $coupon->type,
+        'value' => $coupon->value,
+    ]);
+
+    return redirect()->back()->with('success', 'کوپن تخفیف با موفقیت اعمال شد.');
+}
+
 }

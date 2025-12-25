@@ -30,6 +30,9 @@
                     <a class="nav-link" href="{{ route('admin.dashboard') }}">داشبورد</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('admin.users.index') }}">مدیریت کاربران</a>
+                </li>
+                 <li class="nav-item">
                     <a class="nav-link" href="{{ route('admin.categories.index') }}">مدیریت دسته‌بندی‌ها</a>
                 </li>
                 <li class="nav-item">
@@ -40,7 +43,7 @@
                 </li>
                 
                 <li class="nav-item">
-                    <a class="nav-link" href="{{ route('admin.users.index') }}">مدیریت کاربران</a>
+                    <a class="nav-link" href="{{ route('admin.coupons.index') }}">مدیریت کوپن‌ها</a>
                 </li>
             </ul>
         </div>
