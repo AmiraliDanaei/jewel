@@ -11,6 +11,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\AddressController; // <-- New
 // Admin Controllers
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\ProductController as AdminProductController;
@@ -38,15 +39,23 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::get('/cart', [CartController::class, 'show'])->name('cart.show');
 Route::patch('/cart/update', [CartController::class, 'update'])->name('cart.update');
 Route::delete('/cart/remove', [CartController::class, 'remove'])->name('cart.remove');
-Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.apply-coupon'); // <-- New Coupon Route
+Route::post('/cart/apply-coupon', [CartController::class, 'applyCoupon'])->name('cart.apply-coupon');
 Route::get('/payment/callback', [CheckoutController::class, 'callback'])->name('payment.callback');
 
 // == 3. AUTHENTICATED USER ROUTES ==
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dashboard', fn() => view('dashboard'))->name('dashboard');
+    
+    // Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/profile/orders', [ProfileController::class, 'orders'])->name('profile.orders');
+    
+    // Address Management for User
+    Route::resource('addresses', AddressController::class); // <-- NEW: This adds all routes for addresses
+    
+    // Checkout Routes
     Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
     Route::post('/checkout', [CheckoutController::class, 'placeOrder'])->name('checkout.placeOrder');
 });

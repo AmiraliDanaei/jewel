@@ -9,13 +9,19 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
-    {
-        Schema::create('addresses', function (Blueprint $table) {
-            $table->id();
-            $table->timestamps();
-        });
-    }
+   public function up(): void
+{
+    Schema::create('addresses', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('user_id')->constrained()->onDelete('cascade');
+        $table->string('province');
+        $table->string('city');
+        $table->text('address');
+        $table->string('postal_code');
+        $table->timestamps();
+    });
+}
+
 
     /**
      * Reverse the migrations.

@@ -29,8 +29,7 @@ class AuthenticatedSessionController extends Controller
         $user = User::where('email', $request->email)->first();
 
         if ($user) {
-            $code = random_int(100000, 999999); // Generate a 6-digit code
-
+            $code = random_int(100000, 999999);
             $user->login_code = $code;
             $user->login_code_expires_at = now()->addMinutes(10);
             $user->save();
@@ -48,16 +47,13 @@ class AuthenticatedSessionController extends Controller
      */
     public function showVerifyForm()
     {
-        // Make sure the user came from the previous step
         if (!session('email')) {
             return redirect()->route('login');
         }
         return view('auth.verify-code');
     }
 
-    /**
-     * Verify the code and log the user in.
-     */
+    
     public function verifyCode(Request $request)
     {
         $request->validate([
@@ -71,23 +67,21 @@ class AuthenticatedSessionController extends Controller
                     ->first();
 
         if ($user) {
-            // Clear the code
+            
             $user->login_code = null;
             $user->login_code_expires_at = null;
             $user->save();
 
             Auth::login($user);
+
             $request->session()->regenerate();
 
-            return redirect()->intended(route('dashboard', absolute: false));
+            return redirect()->intended(route('home', absolute: false));
         }
 
         return back()->withErrors(['login_code' => 'The provided code is invalid or has expired.']);
     }
 
-    /**
-     * Destroy an authenticated session.
-     */
     public function destroy(Request $request)
     {
         Auth::guard('web')->logout();

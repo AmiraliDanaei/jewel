@@ -20,6 +20,12 @@ class ProfileController extends Controller
             'user' => $request->user(),
         ]);
     }
+    public function orders()
+    {
+    $orders = auth()->user()->orders()->with('items.product')->latest()->paginate(5);
+    return view('profile.orders', compact('orders'));
+    }
+
 
     /**
      * Update the user's profile information.
