@@ -2,9 +2,20 @@
 
 return [
 
+    /*
+    |--------------------------------------------------------------------------
+    | Default Mailer
+    |--------------------------------------------------------------------------
+    */
     'default' => env('MAIL_MAILER', 'smtp'),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Mailer Configurations
+    |--------------------------------------------------------------------------
+    */
     'mailers' => [
+
         'smtp' => [
             'transport' => 'smtp',
             'host' => env('MAIL_HOST', '127.0.0.1'),
@@ -15,7 +26,7 @@ return [
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
 
-            // === THIS IS THE BLOCK THAT DISABLES SSL VERIFICATION ===
+            // Disable SSL verification (useful for local dev or self‑signed certs)
             'stream' => [
                 'ssl' => [
                     'allow_self_signed' => true,
@@ -23,7 +34,6 @@ return [
                     'verify_peer_name' => false,
                 ],
             ],
-            // ==========================================================
         ],
 
         'ses' => [
@@ -60,12 +70,17 @@ return [
             ],
             'retry_after' => 60,
         ],
-
     ],
 
+    /*
+    |--------------------------------------------------------------------------
+    | Global "From" Address
+    |--------------------------------------------------------------------------
+    */
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
-        'name' => env('MAIL_FROM_NAME', 'Example'),
+    'address' => env('MAIL_FROM_ADDRESS', 'amirdante1384@gmail.com'),
+    'name' => env('MAIL_FROM_NAME', 'Jewel Store'),
     ],
+
 
 ];

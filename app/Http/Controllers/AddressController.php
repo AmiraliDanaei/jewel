@@ -21,12 +21,18 @@ class AddressController extends Controller
      */
     public function create()
     {
-        return view('profile.addresses.create');
+        
+        $provinces = [
+            'آذربایجان شرقی', 'آذربایجان غربی', 'اردبیل', 'اصفهان', 'البرز', 'ایلام', 'بوشهر', 'تهران',
+            'چهارمحال و بختیاری', 'خراسان جنوبی', 'خراسان رضوی', 'خراسان شمالی', 'خوزستان', 'زنجان',
+            'سمنان', 'سیستان و بلوچستان', 'فارس', 'قزوین', 'قم', 'کردستان', 'کرمان', 'کرمانشاه',
+            'کهگیلویه و بویراحمد', 'گلستان', 'گیلان', 'لرستان', 'مازندران', 'مرکزی', 'هرمزگان', 'همدان', 'یزد'
+        ];
+
+        
+        return view('profile.addresses.create', compact('provinces'));
     }
 
-    /**
-     * Store a newly created address in storage.
-     */
     public function store(Request $request)
     {
         $validated = $request->validate([
@@ -41,5 +47,5 @@ class AddressController extends Controller
         return redirect()->route('addresses.index')->with('success', 'آدرس جدید با موفقیت اضافه شد.');
     }
     
-    // We will add edit, update, destroy later
+    
 }

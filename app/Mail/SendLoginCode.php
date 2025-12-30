@@ -3,7 +3,6 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
@@ -23,6 +22,7 @@ class SendLoginCode extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
+            from: config('mail.from.address'),   
             subject: 'Your Login Code for EShopper',
         );
     }
@@ -31,6 +31,9 @@ class SendLoginCode extends Mailable
     {
         return new Content(
             view: 'emails.login-code',
+            with: [
+                'code' => $this->code,           
+            ],
         );
     }
 }
