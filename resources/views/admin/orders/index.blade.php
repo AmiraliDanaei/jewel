@@ -3,6 +3,7 @@
 @section('title', 'مدیریت سفارش‌ها')
 
 @section('content')
+
     <h1 class="text-right">مدیریت سفارش‌ها</h1>
 
     @if(session('success'))
@@ -31,22 +32,27 @@
                             <td>{{ $order->name }}</td>
                             <td>{{ number_format($order->total_amount) }} تومان</td>
                             <td>
-                                <span class="badge 
-                                    @if($order->status == 'pending_payment') badge-warning
-                                    @elseif($order->status == 'paid') badge-success
-                                    @else badge-danger @endif">
-                                    @if($order->status == 'pending_payment')
-                                        در انتظار پرداخت
-                                    @elseif($order->status == 'paid')
-                                        پرداخت شده
-                                    @else
-                                        {{ $order->status }}
-                                    @endif
+                                @php
+                                    $statusConfig = [
+                                        'pending_payment' => ['class' => 'badge-warning', 'text' => 'در انتظار پرداخت'],
+                                        'paid'              => ['class' => 'badge-success', 'text' => 'پرداخت شده'],
+                                        'processing'      => ['class' => 'badge-primary', 'text' => 'در حال پردازش'],
+                                        'shipped'           => ['class' => 'badge-info', 'text' => 'ارسال شده'],
+                                        'completed'         => ['class' => 'badge-dark', 'text' => 'تکمیل شده'],
+                                        'cancelled'         => ['class' => 'badge-danger', 'text' => 'لغو شده'],
+                                    ];
+                                    $statusClass = $statusConfig[$order->status]['class'] ?? 'badge-secondary';
+                                    $statusText = $statusConfig[$order->status]['text'] ?? $order->status;
+                                @endphp
+                                <span class="badge {{ $statusClass }}" style="font-size: 0.9em; padding: 0.5em 0.8em;">
+                                    {{ $statusText }}
                                 </span>
                             </td>
                             <td>{{ $order->created_at->format('Y/m/d') }}</td>
                             <td>
-                                <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-info">مشاهده جزئیات</a>
+                                <a href="{{ route('admin.orders.show', $order->id) }}" class="btn btn-sm btn-info">
+                                    <i class="fa fa-eye"></i> مشاهده جزئیات
+                                </a>
                             </td>
                         </tr>
                     @empty
@@ -61,4 +67,5 @@
             {{ $orders->links() }}
         </div>
     </div>
+
 @endsection

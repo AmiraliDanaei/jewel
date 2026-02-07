@@ -1,4 +1,3 @@
-<!-- resources/views/emails/login-code.blade.php -->
 
 <!DOCTYPE html>
 <html lang="fa">

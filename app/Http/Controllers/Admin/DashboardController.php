@@ -16,10 +16,10 @@ class DashboardController extends Controller
         $productCount = Product::count();
         $orderCount = Order::count();
         
-        // Calculate total revenue from 'paid' orders
+       
         $totalRevenue = Order::where('status', 'paid')->sum('total_amount');
         
-        // Get the last 5 orders
+        
         $latestOrders = Order::latest()->take(5)->get();
 
         return view('admin.dashboard', compact(

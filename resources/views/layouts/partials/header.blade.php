@@ -11,7 +11,6 @@
             </div>
         </div>
         <div class="col-lg-6 d-none d-lg-block text-lg-left">
-            {{-- Social media links can go here on the left --}}
         </div>
     </div>
     <div class="row align-items-center py-3 px-xl-5">
@@ -23,28 +22,47 @@
         <div class="col-lg-6 col-6 text-right">
             <form action="">
                 <div class="input-group">
-                    <div class="input-group-prepend">
+                    <input type="text" class="form-control text-right" placeholder="جستجو برای محصولات">
+                    <div class="input-group-append">
                         <span class="input-group-text bg-transparent text-primary"><i class="fa fa-search"></i></span>
                     </div>
-                    <input type="text" class="form-control text-right" placeholder="جستجو برای محصولات">
                 </div>
             </form>
         </div>
         <div class="col-lg-3 col-6 text-left">
-            <a href="{{ route('cart.show') }}" class="btn border">
-                <span class="badge">{{ count((array) session('cart')) }}</span>
-                <i class="fas fa-shopping-cart text-primary"></i>
+            <a href="{{ route('profile.wishlist') }}" class="btn border">
+                <i class="fas fa-heart text-primary"></i>
+                <span class="badge">{{ $wishlistCount ?? 0 }}</span>
             </a>
-            <a href="" class="btn border"><span class="badge">۰</span><i class="fas fa-heart text-primary"></i></a>
+            <a href="{{ route('cart.show') }}" class="btn border ml-2">
+                <i class="fas fa-shopping-cart text-primary"></i>
+                <span class="badge">{{ count((array) session('cart')) }}</span>
+            </a>
         </div>
     </div>
 </div>
 <!-- Topbar End -->
 
+
 <!-- Navbar Start -->
 <div class="container-fluid">
     <div class="row border-top px-xl-5">
-        <div class="col-lg-9 order-2 order-lg-1">
+        <div class="col-lg-3 d-none d-lg-block">
+            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
+                <h6 class="m-0">دسته‌بندی‌ها</h6>
+                <i class="fa fa-angle-down text-dark"></i>
+            </a>
+            <nav class="collapse {{ Request::is('/') ? 'show' : '' }} navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical">
+                <div class="navbar-nav w-100 overflow-hidden" style="height: 410px">
+                    @if(isset($categories))
+                        @foreach($categories as $category)
+                            <a href="{{ route('category.products', $category->id) }}" class="nav-item nav-link">{{ $category->name }}</a>
+                        @endforeach
+                    @endif
+                </div>
+            </nav>
+        </div>
+        <div class="col-lg-9">
             <nav class="navbar navbar-expand-lg bg-light navbar-light py-3 py-lg-0 px-0">
                 <a href="" class="text-decoration-none d-block d-lg-none">
                     <h1 class="m-0 display-5 font-weight-semi-bold"><span class="text-primary font-weight-bold border px-3 mr-1">E</span>فروشگاه</h1>
@@ -53,12 +71,13 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse justify-content-between" id="navbarCollapse">
-                    <div class="navbar-nav">
+                    <div class="navbar-nav mr-auto py-0">
                         <a href="{{ route('home') }}" class="nav-item nav-link active">خانه</a>
                         <a href="#" class="nav-item nav-link">فروشگاه</a>
                         <a href="{{ route('about') }}" class="nav-item nav-link">تماس با ما</a>
                     </div>
                     <div class="navbar-nav ml-auto py-0">
+                        {{-- ↓↓↓↓↓↓ بخش ورود/خروج و منوی کاربر (نسخه کامل و صحیح) ↓↓↓↓↓↓ --}}
                         @guest
                             <a href="{{ route('login') }}" class="nav-item nav-link">ورود</a>
                             @if (Route::has('register'))
@@ -67,8 +86,11 @@
                         @else
                             <div class="nav-item dropdown">
                                 <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown">{{ Auth::user()->name }}</a>
-                                <div class="dropdown-menu rounded-0 m-0">
+                                <div class="dropdown-menu rounded-0 m-0 dropdown-menu-right">
                                     <a href="{{ route('profile.edit') }}" class="dropdown-item">پروفایل من</a>
+                                    <a href="{{ route('profile.orders') }}" class="dropdown-item">سفارش‌های من</a>
+                                    <a href="{{ route('profile.wishlist') }}" class="dropdown-item">لیست علاقه‌مندی‌ها</a>
+                                    <div class="dropdown-divider"></div>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
                                         <a href="{{ route('logout') }}" class="dropdown-item" onclick="event.preventDefault(); this.closest('form').submit();">خروج</a>
@@ -76,9 +98,12 @@
                                 </div>
                             </div>
                         @endguest
+                        {{-- ↑↑↑↑↑↑ پایان بخش منوی کاربر ↑↑↑↑↑↑ --}}
                     </div>
                 </div>
             </nav>
+            
+            {{-- Carousel (فقط برای صفحه اصلی) --}}
             @if(Request::is('/'))
             <div id="header-carousel" class="carousel slide" data-ride="carousel">
                 <div class="carousel-inner">
@@ -107,21 +132,6 @@
                 <a class="carousel-control-next" href="#header-carousel" data-slide="next"><div class="btn btn-dark" style="width: 45px; height: 45px;"><span class="carousel-control-next-icon mb-n2"></span></div></a>
             </div>
             @endif
-        </div>
-        <div class="col-lg-3 order-1 order-lg-2">
-            <a class="btn shadow-none d-flex align-items-center justify-content-between bg-primary text-white w-100" data-toggle="collapse" href="#navbar-vertical" style="height: 65px; margin-top: -1px; padding: 0 30px;">
-                <h6 class="m-0">دسته‌بندی‌ها</h6>
-                <i class="fa fa-angle-down text-dark"></i>
-            </a>
-            <nav class="collapse show navbar navbar-vertical navbar-light align-items-start p-0 border border-top-0 border-bottom-0" id="navbar-vertical" style="width: 100%; z-index: 1;">
-                <div class="navbar-nav w-100 overflow-hidden text-right" style="height: 410px">
-                    @if(isset($categories))
-                        @foreach($categories as $category)
-                            <a href="{{ route('category.products', $category->id) }}" class="nav-item nav-link">{{ $category->name }}</a>
-                        @endforeach
-                    @endif
-                </div>
-            </nav>
         </div>
     </div>
 </div>

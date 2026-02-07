@@ -1,4 +1,3 @@
-<!-- Footer Start -->
 <div class="container-fluid bg-secondary text-dark mt-5 pt-5" style="direction: rtl;">
     <div class="row px-xl-5 pt-5">
         <div class="col-lg-4 col-md-12 mb-5 pr-3 pr-xl-5">
@@ -49,5 +48,4 @@
         </div>
     </div>
 </div>
-<!-- Footer End -->
 

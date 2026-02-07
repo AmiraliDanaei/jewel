@@ -7,18 +7,14 @@ use Illuminate\Http\Request;
 
 class AddressController extends Controller
 {
-    /**
-     * Display a listing of the user's addresses.
-     */
+   
     public function index()
     {
         $addresses = auth()->user()->addresses()->latest()->get();
         return view('profile.addresses.index', compact('addresses'));
     }
 
-    /**
-     * Show the form for creating a new address.
-     */
+    
     public function create()
     {
         

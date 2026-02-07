@@ -2,18 +2,10 @@
 
 return [
 
-    /*
-    |--------------------------------------------------------------------------
-    | Default Mailer
-    |--------------------------------------------------------------------------
-    */
+   
     'default' => env('MAIL_MAILER', 'smtp'),
 
-    /*
-    |--------------------------------------------------------------------------
-    | Mailer Configurations
-    |--------------------------------------------------------------------------
-    */
+    
     'mailers' => [
 
         'smtp' => [
@@ -26,7 +18,7 @@ return [
             'timeout' => null,
             'local_domain' => env('MAIL_EHLO_DOMAIN'),
 
-            // Disable SSL verification (useful for local dev or self‑signed certs)
+            
             'stream' => [
                 'ssl' => [
                     'allow_self_signed' => true,
@@ -72,11 +64,7 @@ return [
         ],
     ],
 
-    /*
-    |--------------------------------------------------------------------------
-    | Global "From" Address
-    |--------------------------------------------------------------------------
-    */
+    
     'from' => [
     'address' => env('MAIL_FROM_ADDRESS', 'amirdante1384@gmail.com'),
     'name' => env('MAIL_FROM_NAME', 'Jewel Store'),

@@ -66,7 +66,7 @@
                                             <h2 class="font-weight-bold"><span class="text-primary">E</span>Shopper</h2>
                                         </a>
                                     </div>
-                                    {{-- The form from login.blade.php or register.blade.php will be injected here --}}
+                                   
                                     @yield('content') 
                                 </div>
                             </div>

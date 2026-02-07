@@ -64,9 +64,6 @@
                     <p><strong>مبلغ کل:</strong> <span class="font-weight-bold">{{ number_format($order->total_amount) }} تومان</span></p>
                     <p><strong>وضعیت:</strong> <span class="badge badge-info">@if($order->status == 'pending_payment') در انتظار پرداخت @else {{ $order->status }} @endif</span></p>
 
-                    {{-- =============================================== --}}
-                    {{--  THIS IS THE NEW FORM TO UPDATE ORDER STATUS   --}}
-                    {{-- =============================================== --}}
                     <hr>
                     <h5 class="mt-4 text-right">تغییر وضعیت سفارش</h5>
                     <form action="{{ route('admin.orders.update', $order->id) }}" method="POST">
@@ -84,7 +81,7 @@
                         </div>
                         <button type="submit" class="btn btn-primary btn-block">بروزرسانی وضعیت</button>
                     </form>
-                    {{-- =============================================== --}}
+                    
                 </div>
             </div>
         </div>

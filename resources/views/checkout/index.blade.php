@@ -4,7 +4,6 @@
 
 @section('content')
 
-    <!-- Page Header Start -->
     <div class="container-fluid bg-secondary mb-5">
         <div class="d-flex flex-column align-items-center justify-content-center" style="min-height: 150px;">
             <h1 class="font-weight-semi-bold text-uppercase mb-3">تکمیل خرید</h1>
@@ -15,9 +14,9 @@
             </div>
         </div>
     </div>
-    <!-- Page Header End -->
 
-    <!-- Checkout Start -->
+
+    
     <div class="container-fluid pt-5">
         <form class="row px-xl-5" action="{{ route('checkout.placeOrder') }}" method="POST">
             @csrf
@@ -132,5 +131,5 @@
             </div>
         </form>
     </div>
-    <!-- Checkout End -->
+    
 @endsection

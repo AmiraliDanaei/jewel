@@ -11,17 +11,13 @@ use App\Mail\SendLoginCode;
 
 class AuthenticatedSessionController extends Controller
 {
-    /**
-     * Display the login view.
-     */
+    
     public function create()
     {
         return view('auth.login');
     }
 
-    /**
-     * Generate and send a login code to the user.
-     */
+    
     public function sendCode(Request $request)
     {
         $request->validate(['email' => 'required|email']);
@@ -42,9 +38,7 @@ class AuthenticatedSessionController extends Controller
         return back()->withErrors(['email' => 'We could not find a user with that email address.']);
     }
 
-    /**
-     * Show the form to enter the verification code.
-     */
+    
     public function showVerifyForm()
     {
         if (!session('email')) {

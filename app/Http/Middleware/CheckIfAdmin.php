@@ -19,7 +19,7 @@ class CheckIfAdmin
         return $next($request);
     }
 
-    // If not an admin, redirect to home page
+    
     return redirect('/')->with('error', 'شما اجازه دسترسی به این بخش را ندارید.');
 }
 

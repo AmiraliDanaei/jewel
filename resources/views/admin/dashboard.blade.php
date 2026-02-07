@@ -5,7 +5,6 @@
 @section('content')
     <h1 class="text-right mb-4">داشبورد</h1>
 
-    <!-- Statistics Cards -->
     <div class="row">
         <div class="col-md-3">
             <div class="card text-white bg-primary mb-3">
@@ -44,15 +43,13 @@
             </div>
         </div>
     </div>
-
-    <!-- Latest Orders -->
     <div class="card mt-4">
         <div class="card-header text-right">
             <h4>آخرین ۵ سفارش</h4>
         </div>
         <div class="card-body">
             <table class="table table-bordered text-center">
-                {{-- Table for latest orders (same as orders.index but without pagination) --}}
+               
             </table>
         </div>
     </div>

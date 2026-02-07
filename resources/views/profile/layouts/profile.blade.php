@@ -3,7 +3,7 @@
 @section('content')
 <div class="container">
     <div class="row">
-        <!-- Profile Sidebar -->
+       
         <div class="col-lg-3">
             <div class="list-group text-right shadow-sm">
                 <a href="{{ route('profile.edit') }}" class="list-group-item list-group-item-action {{ request()->routeIs('profile.edit') ? 'active' : '' }}">
@@ -25,7 +25,7 @@
                 <form id="logout-form-profile" action="{{ route('logout') }}" method="POST" class="d-none">@csrf</form>
             </div>
         </div>
-        <!-- Profile Content -->
+        
         <div class="col-lg-9">
             @if(session('success'))
                 <div class="alert alert-success text-right">{{ session('success') }}</div>
